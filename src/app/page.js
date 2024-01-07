@@ -10,16 +10,26 @@ const Home = () => {
 
   const handleWordGuess = (word) => {
     setFadedLetters((prevFadedLetters) => [...prevFadedLetters, ...word.split('')]);
-    setGuessedWords((prevGuessedWords) => [...prevGuessedWords, word]);
+    setGuessedWords((prevGuessedWords) => {
+      const newGuessedWords = [...prevGuessedWords, word];
+      console.log('Guessed Words:', newGuessedWords); // Log the updated guessed words
+      return newGuessedWords;
+    });
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
       <main className="text-center mb-8">
+        {/* Display guessed words */}
         <GuessedWordsDisplay guessedWords={guessedWords} />
       </main>
-        <OnScreenKeyboard fadedLetters={fadedLetters} />
-        <WordGuess onGuess={handleWordGuess} />
+
+      {/* On-screen keyboard */}
+      <OnScreenKeyboard fadedLetters={fadedLetters} />
+
+      {/* Word guess component */}
+      <WordGuess onGuess={handleWordGuess} />
     </div>
   );
 };
