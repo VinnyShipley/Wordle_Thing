@@ -17,9 +17,9 @@ const Home = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
       <main className="text-center mb-8">
         <GuessedWordsDisplay guessedWords={guessedWords} />
+      </main>
         <OnScreenKeyboard fadedLetters={fadedLetters} />
         <WordGuess onGuess={handleWordGuess} />
-      </main>
     </div>
   );
 };
