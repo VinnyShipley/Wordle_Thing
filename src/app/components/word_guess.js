@@ -10,7 +10,7 @@ const WordGuess = ({ onGuess }) => {
 
   const handleGuessSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       // Make a request to your server to check the guessed word
       const response = await fetch('/api/check-word', {
@@ -20,10 +20,14 @@ const WordGuess = ({ onGuess }) => {
         },
         body: JSON.stringify({ guess }),
       });
-
+  
+      // Log the server response to the console
+      const serverResponse = await response.json();
+      console.log('Server response:', serverResponse);
+  
       if (response.ok) {
-        const { isCorrect } = await response.json();
-
+        const { isCorrect } = serverResponse;
+  
         if (isCorrect) {
           // Correct word
           onGuess && onGuess(guess);
@@ -36,10 +40,6 @@ const WordGuess = ({ onGuess }) => {
         // Handle server error
         alert('Server error. Please try again later.');
       }
-
-      // Log the server response to the console
-      const serverResponse = await response.json();
-      console.log('Server response:', serverResponse);
     } catch (error) {
       // Handle other errors
       console.error('Error:', error);
