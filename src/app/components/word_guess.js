@@ -8,15 +8,48 @@ const WordGuess = ({ onGuess }) => {
     setGuess(event.target.value.toUpperCase()); // Convert to uppercase for consistency
   };
 
-  const handleGuessSubmit = (event) => {
+  const handleGuessSubmit = async (event) => {
     event.preventDefault();
-    onGuess && onGuess(guess);
-    setGuess(''); // Clear the input after submitting the guess
+
+    try {
+      // Make a request to your server to check the guessed word
+      const response = await fetch('/api/check-word', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ guess }),
+      });
+
+      if (response.ok) {
+        const { isCorrect } = await response.json();
+
+        if (isCorrect) {
+          // Correct word
+          onGuess && onGuess(guess);
+          setGuess('');
+        } else {
+          // Incorrect word
+          alert('Incorrect word! Try again.');
+        }
+      } else {
+        // Handle server error
+        alert('Server error. Please try again later.');
+      }
+
+      // Log the server response to the console
+      const serverResponse = await response.json();
+      console.log('Server response:', serverResponse);
+    } catch (error) {
+      // Handle other errors
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    }
   };
 
   return (
     <form onSubmit={handleGuessSubmit} className="mt-4 text-center">
-      <label className="block text-black mb-2">Your Guess:</label>
+      <label className="text-3xl block text-black mb-2">Your Guess:</label>
       <div className="flex justify-center">
         <input
           type="text"
