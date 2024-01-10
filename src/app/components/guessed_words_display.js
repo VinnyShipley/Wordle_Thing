@@ -1,9 +1,12 @@
-'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const GuessedWordsDisplay = ({ guessedWords }) => {
+  useEffect(() => {
+    console.log('Guessed Words:', guessedWords);
+  }, [guessedWords]);
+
   return (
-    <div className="flex flex-col mb-2">
+    <div>
       {guessedWords.map((word, index) => (
         <div key={index} className="flex mb-2">
           {word.split('').map((letter, letterIndex) => (

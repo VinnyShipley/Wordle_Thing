@@ -4,13 +4,14 @@ export default function handler(req, res) {
 
     // Validate guess as needed
 
-    // Retrieve the correct word (for demonstration purposes, using a global variable)
-    const correctWord = global.correctWord || 'EXAMPLE';
+    // Set the correct word globally (for demonstration purposes)
+    global.correctWord = 'EXAMPLE';
 
     // Check if the guessed word is correct
-    const isCorrect = guess.toUpperCase() === correctWord.toUpperCase();
+    const isCorrect = guess.toUpperCase() === global.correctWord.toUpperCase();
 
-    res.status(200).json({ guess, isCorrect });
+    // Include the correct word in the response
+    res.status(200).json({ guess, isCorrect, correctWord: global.correctWord });
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
