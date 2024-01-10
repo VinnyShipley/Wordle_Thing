@@ -10,7 +10,7 @@ export default function handler(req, res) {
     // Check if the guessed word is correct
     const isCorrect = guess.toUpperCase() === correctWord.toUpperCase();
 
-    res.status(200).json({ isCorrect });
+    res.status(200).json({ guess, isCorrect });
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
