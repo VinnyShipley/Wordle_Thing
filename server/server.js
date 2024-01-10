@@ -1,21 +1,24 @@
 const express = require('express');
-const next = require('next');
+const bodyParser = require('body-parser');
 
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+const app = express();
 
-app.prepare().then(() => {
-  const server = express();
+// Use body-parser to parse JSON requests
+app.use(bodyParser.json());
 
-  server.all('*', (req, res) => {
-    return handle(req, res);
-  });
+let guessedWords = [];
 
-  const PORT = process.env.PORT || 3000;
+app.post('/api/guess-word', (req, res) => {
+  const { guessedWord } = req.body;
 
-  server.listen(PORT, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on http://localhost:${PORT}`);
-  });
+  // Add the guessed word to the list
+  guessedWords.push(guessedWord);
+
+  // Send back the updated guessed words list
+  res.json({ guessedWords });
+});
+
+app.get('/api/guessed-words', (req, res) => {
+  // Send the current guessed words list as JSON
+  res.json({ guessedWords });
 });
