@@ -1,17 +1,17 @@
-export default async function handler(req, res) {
+export default function handler(req, res) {
   if (req.method === 'POST') {
-    try {
-      // Assuming you want to log 'hello' when the submit button is pressed
-      console.log('hello');
+    const { guess } = req.body;
 
-      // You can send a response back to the client if needed
-      res.status(200).json({ message: 'Word checked successfully' });
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
+    // Validate guess as needed
+
+    // Retrieve the correct word (for demonstration purposes, using a global variable)
+    const correctWord = global.correctWord || 'EXAMPLE';
+
+    // Check if the guessed word is correct
+    const isCorrect = guess.toUpperCase() === correctWord.toUpperCase();
+
+    res.status(200).json({ isCorrect });
   } else {
-    // Method Not Allowed
-    res.status(405).end();
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
