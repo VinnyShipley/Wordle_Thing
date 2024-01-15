@@ -6,7 +6,7 @@ import GuessedWordsDisplay from './components/guessed_words_display';
 
 const Home = () => {
   const [fadedLetters, setFadedLetters] = React.useState([]);
-  const [guessedWords, setGuessedWords] = useState([]);
+  const [serverResponse, setServerResponse] = useState(null);
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0); // Reducer that doesn't change state
 
   const handleWordGuess = async (word) => {
@@ -21,8 +21,9 @@ const Home = () => {
         body: JSON.stringify({ guess: word }),
       });
 
-      const serverResponse = await response.json();
-      console.log('Server response:', serverResponse);
+      const newServerResponse = await response.json();
+      setServerResponse(newServerResponse);
+      setGuessedWords((prevGuessedWords) => [...prevGuessedWords, word]);
 
       if (serverResponse.isCorrect) {
         // Update guessedWords state if the guess is correct
@@ -38,7 +39,8 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
       <main className="text-center mb-8">
-        <GuessedWordsDisplay guessedWords={guessedWords} />
+      {serverResponse && <GuessedWordsDisplay serverResponse={serverResponse} />}
+
       </main>
       <OnScreenKeyboard fadedLetters={fadedLetters} />
       <WordGuess onGuess={handleWordGuess} />

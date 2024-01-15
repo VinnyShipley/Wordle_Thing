@@ -1,16 +1,15 @@
-'use client';
 import React from 'react';
-import GuessedWordsDisplay from './guessed_words_display.js';
 
-const DisplayedAnswers = ({ submittedWords }) => {
+const FeedbackDisplay = ({ serverResponse }) => {
+  const { guess, isCorrect, correctWord } = serverResponse;
+
   return (
-    <div className="mt-4 flex flex-col items-center">
-      <h2 className="text-3xl text-black font-bold mb-2">Submitted Words:</h2>
-      {submittedWords.map((word, index) => (
-        <GuessedWordsDisplay key={index} word={word} />
-      ))}
+    <div>
+      <p>Guess: {guess}</p>
+      <p>Is Correct: {isCorrect.toString()}</p>
+      <p>Correct Word: {correctWord}</p>
     </div>
   );
 };
 
-export default DisplayedAnswers;
+export default FeedbackDisplay;
