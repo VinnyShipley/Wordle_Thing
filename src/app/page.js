@@ -7,10 +7,13 @@ import GuessedWordsDisplay from './components/guessed_words_display';
 const Home = () => {
   const [fadedLetters, setFadedLetters] = React.useState([]);
   const [serverResponse, setServerResponse] = useState(null);
-  const [, forceUpdate] = React.useReducer((x) => x + 1, 0); // Reducer that doesn't change state
+  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [guessedWords, setGuessedWords] = useState([]);
+
 
   const handleWordGuess = async (word) => {
     setFadedLetters((prevFadedLetters) => [...prevFadedLetters, ...word.split('')]);
+    setGuessedWords((prevGuessedWords) => [...prevGuessedWords, word]);
 
     try {
       const response = await fetch('/api/check-word', {
@@ -25,7 +28,7 @@ const Home = () => {
       setServerResponse(newServerResponse);
       setGuessedWords((prevGuessedWords) => [...prevGuessedWords, word]);
 
-      if (serverResponse.isCorrect) {
+      if (serverResponse && serverResponse.isCorrect) {
         // Update guessedWords state if the guess is correct
         setGuessedWords((prevGuessedWords) => [...prevGuessedWords, serverResponse.guess]);
         forceUpdate(); // Manually trigger a re-render
@@ -39,7 +42,7 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
       <main className="text-center mb-8">
-      {serverResponse && <GuessedWordsDisplay serverResponse={serverResponse} />}
+      <GuessedWordsDisplay serverResponse={serverResponse} />
 
       </main>
       <OnScreenKeyboard fadedLetters={fadedLetters} />
