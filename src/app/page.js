@@ -8,15 +8,16 @@ const Home = () => {
   const [fadedLetters, setFadedLetters] = useState([]);
   const [guessedWords, setGuessedWords] = useState([]);
 
-  const handleWordGuess = (word) => {
-    setFadedLetters((prevFadedLetters) => [...prevFadedLetters, ...word.split('')]);
-    setGuessedWords((prevGuessedWords) => [...prevGuessedWords, word]);
+  const handleWordGuess = (guessedWord) => {
+    setFadedLetters((prevFadedLetters) => [...prevFadedLetters, ...guessedWord.split('')]);
+    setGuessedWords([...guessedWords, guessedWord]);
+    console.log(guessedWords)
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
       <main className="text-center mb-8">
-      
+      <GuessedWordsDisplay guessedWords={guessedWords}/>
       </main>
       <OnScreenKeyboard fadedLetters={fadedLetters} />
       <WordGuess onGuess={handleWordGuess} guessedWords={guessedWords} setGuessedWords={setGuessedWords} />

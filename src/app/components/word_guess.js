@@ -39,6 +39,7 @@ const WordGuess = ({ onGuess }) => {
           setGuess('');
         } else {
           // Incorrect word
+          onGuess && onGuess(guess);
           guessedWords.push(serverResponse.guess)
           setGuess('');
         }
@@ -69,7 +70,6 @@ const WordGuess = ({ onGuess }) => {
           </button>
         </div>
       </form>
-      <GuessedWordsDisplay guessedWords={guessedWords} />
     </div>
   );
 };
