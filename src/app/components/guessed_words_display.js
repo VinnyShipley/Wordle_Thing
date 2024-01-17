@@ -1,5 +1,3 @@
-// GuessedWordsDisplay.js
-
 import React from 'react';
 
 const GuessedWordsDisplay = ({ guessedWords }) => {

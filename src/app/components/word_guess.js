@@ -9,6 +9,23 @@ const WordGuess = ({ onGuess }) => {
 		setGuess(event.target.value.toUpperCase()); // Convert to uppercase for consistency
 	};
 
+	function getColorCode(char, correctChar, correctList, colorList, index) {
+    
+		if (char != correctChar && !correctChar.includes(char)) {
+			console.log(char);
+			colorList.push('red');
+      }
+		if (correctList.includes(char) && !(char == correctChar)) {
+				console.log(correctChar);
+				colorList.push('yellow');
+			}
+		if (char == correctChar) {
+				colorList.push('green');
+			}
+    
+		return colorList;
+}
+
 	const handleGuessSubmit = async (event) => {
 		event.preventDefault();
 
@@ -31,16 +48,13 @@ const WordGuess = ({ onGuess }) => {
 				// Split the guessed word into individual letters
 				const guessedLetters = guess.split('');
 				const correctLetters = correctWord.toUpperCase().split('');
-				console.log('Guessed Letters:', guessedLetters);
-				console.log('Correct letters: ', correctLetters);
-				console.log('length of guessed: ', guessedLetters.length);
-				console.log('length of correct: ', correctLetters.length);
 
-				if (guessedLetters.length != correctLetters.length) {
+				if (guessedLetters.length !== correctLetters.length) {
 					const correctLength = correctLetters.length;
 					alert('Guess needs to be ' + correctLength + ' letters long.');
 				}
-				if (guessedLetters.length == correctLetters.length) {
+
+				if (guessedLetters.length === correctLetters.length) {
 					if (isCorrect) {
 						// Correct word
 						guessedWords.push(serverResponse);
@@ -48,15 +62,23 @@ const WordGuess = ({ onGuess }) => {
 						alert('Correct! The word is ' + correctWord.toUpperCase());
 					} else {
 						// Incorrect Word
+						const colorListPasser = [];
+						for (let i = 0; i < guessedLetters.length; i++) {
+							getColorCode(
+								guessedLetters[i],
+								correctLetters[i],
+								correctLetters,
+								colorListPasser,
+                i
+							);
+						}
+						console.log(colorListPasser);
 						guessedWords.push(serverResponse.guess);
 						onGuess && onGuess(guess);
 					}
-
-					setGuess('');
 				}
-			} else {
-				// Handle server error
-				alert('Server error. Please try again later.');
+
+				setGuess('');
 			}
 		} catch (error) {
 			// Handle other errors
