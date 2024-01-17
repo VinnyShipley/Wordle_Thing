@@ -34,16 +34,13 @@ const WordGuess = ({ onGuess }) => {
 
         if (isCorrect) {
           // Correct word
+          guessedWords.push(serverResponse.guess)
           onGuess && onGuess(guess);
           setGuess('');
-          console.log('server respone: ', serverResponse);
-          
-          console.log('guessed words: ', guessedWords);
         } else {
           // Incorrect word
           guessedWords.push(serverResponse.guess)
-          console.log('server respone: ', serverResponse);
-          console.log('guessed words: ', guessedWords);
+          setGuess('');
         }
       } else {
         // Handle server error

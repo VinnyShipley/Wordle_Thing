@@ -3,7 +3,6 @@
 import React from 'react';
 
 const GuessedWordsDisplay = ({ guessedWords }) => {
-  console.log('Guessed Words:', guessedWords);
 
   return (
     <div>
