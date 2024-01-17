@@ -1,15 +1,16 @@
+// GuessedWordsDisplay.js
+
 import React from 'react';
 
-const GuessedWordsDisplay = ({ serverResponse }) => {
-  if (!serverResponse) {
-    return null;
-  }
-
-  const { guess } = serverResponse;
+const GuessedWordsDisplay = ({ guessedWords }) => {
+  console.log('Guessed Words:', guessedWords);
 
   return (
     <div>
-      <div>{guess}</div>
+      {/* Display the guessed words as needed */}
+      {guessedWords.map((word, index) => (
+        <div key={index}>{word}</div>
+      ))}
     </div>
   );
 };
