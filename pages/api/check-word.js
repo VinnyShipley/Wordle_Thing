@@ -5,7 +5,7 @@ export default function handler(req, res) {
     // Validate guess as needed
 
     // Set the correct word globally (for demonstration purposes)
-    global.correctWord = 'EXAMPLE';
+    global.correctWord = 'bears';
 
     // Check if the guessed word is correct
     const isCorrect = guess.toUpperCase() === global.correctWord.toUpperCase();
