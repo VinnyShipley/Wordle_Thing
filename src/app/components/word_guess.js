@@ -10,25 +10,20 @@ const WordGuess = ({ onGuess }) => {
 	};
 
 	function getColorCode(char, correctChar, correctList, colorList, index) {
-    
-		if (char != correctChar && !correctChar.includes(char)) {
-			console.log(char);
+		if (char === correctChar) {
+			colorList.push('green');
+		} else if (correctList.includes(char)) {
+			colorList.push('yellow');
+		} else {
 			colorList.push('red');
-      }
-		if (correctList.includes(char) && !(char == correctChar)) {
-				console.log(correctChar);
-				colorList.push('yellow');
-			}
-		if (char == correctChar) {
-				colorList.push('green');
-			}
-    
+		}
+	
 		return colorList;
-}
+	}
 
 	const handleGuessSubmit = async (event) => {
 		event.preventDefault();
-
+	
 		try {
 			// Make a request to your server to check the guessed word
 			const response = await fetch('/api/check-word', {
@@ -38,22 +33,22 @@ const WordGuess = ({ onGuess }) => {
 				},
 				body: JSON.stringify({ guess }),
 			});
-
+	
 			// Log the server response to the console
 			const serverResponse = await response.json();
-
+	
 			if (response.ok) {
 				const { isCorrect, correctWord } = serverResponse;
-
+	
 				// Split the guessed word into individual letters
 				const guessedLetters = guess.split('');
 				const correctLetters = correctWord.toUpperCase().split('');
-
+	
 				if (guessedLetters.length !== correctLetters.length) {
 					const correctLength = correctLetters.length;
 					alert('Guess needs to be ' + correctLength + ' letters long.');
 				}
-
+	
 				if (guessedLetters.length === correctLetters.length) {
 					if (isCorrect) {
 						// Correct word
@@ -64,20 +59,14 @@ const WordGuess = ({ onGuess }) => {
 						// Incorrect Word
 						const colorListPasser = [];
 						for (let i = 0; i < guessedLetters.length; i++) {
-							getColorCode(
-								guessedLetters[i],
-								correctLetters[i],
-								correctLetters,
-								colorListPasser,
-                i
-							);
+							getColorCode(guessedLetters[i], correctLetters[i], correctLetters, colorListPasser, i);
 						}
 						console.log(colorListPasser);
 						guessedWords.push(serverResponse.guess);
 						onGuess && onGuess(guess);
 					}
 				}
-
+	
 				setGuess('');
 			}
 		} catch (error) {
@@ -86,6 +75,7 @@ const WordGuess = ({ onGuess }) => {
 			alert('An error occurred. Please try again.');
 		}
 	};
+	
 
 	return (
 		<div>
