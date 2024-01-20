@@ -4,26 +4,33 @@ import React, { useState } from 'react';
 const WordGuess = ({ onGuess }) => {
 	const [guess, setGuess] = useState('');
 	const [guessedWords, setGuessedWords] = useState([]);
+	const [colorListPasser, setColorListPasser] = useState([]);
 
 	const handleGuessChange = (event) => {
 		setGuess(event.target.value.toUpperCase()); // Convert to uppercase for consistency
 	};
 
 	function getColorCode(char, correctChar, correctList, colorList, index) {
-		if (char === correctChar) {
-			colorList.push('green');
-		} else if (correctList.includes(char)) {
-			colorList.push('yellow');
-		} else {
-			colorList.push('red');
+		if (char !== correctChar && !correctList.includes(char)) {
+			console.log(char);
+			colorListPasser.push('red');
 		}
-	
+		if (correctList.includes(char) && char !== correctChar) {
+			console.log(char);
+			colorListPasser.push('yellow');
+		}
+		if (char === correctChar) {
+			console.log(char);
+			colorListPasser.push('green');
+		}
+
 		return colorList;
 	}
+	
 
 	const handleGuessSubmit = async (event) => {
 		event.preventDefault();
-	
+
 		try {
 			// Make a request to your server to check the guessed word
 			const response = await fetch('/api/check-word', {
@@ -33,22 +40,22 @@ const WordGuess = ({ onGuess }) => {
 				},
 				body: JSON.stringify({ guess }),
 			});
-	
+
 			// Log the server response to the console
 			const serverResponse = await response.json();
-	
+
 			if (response.ok) {
 				const { isCorrect, correctWord } = serverResponse;
-	
+
 				// Split the guessed word into individual letters
 				const guessedLetters = guess.split('');
 				const correctLetters = correctWord.toUpperCase().split('');
-	
+
 				if (guessedLetters.length !== correctLetters.length) {
 					const correctLength = correctLetters.length;
 					alert('Guess needs to be ' + correctLength + ' letters long.');
 				}
-	
+
 				if (guessedLetters.length === correctLetters.length) {
 					if (isCorrect) {
 						// Correct word
@@ -57,16 +64,23 @@ const WordGuess = ({ onGuess }) => {
 						alert('Correct! The word is ' + correctWord.toUpperCase());
 					} else {
 						// Incorrect Word
-						const colorListPasser = [];
+						const colorListPasserTemp = [];
 						for (let i = 0; i < guessedLetters.length; i++) {
-							getColorCode(guessedLetters[i], correctLetters[i], correctLetters, colorListPasser, i);
+							getColorCode(
+								guessedLetters[i],
+								correctLetters[i],
+								correctLetters,
+								colorListPasserTemp,
+								i
+							);
 						}
-						console.log(colorListPasser);
+						setColorListPasser(colorListPasserTemp);
+						
 						guessedWords.push(serverResponse.guess);
 						onGuess && onGuess(guess);
 					}
 				}
-	
+
 				setGuess('');
 			}
 		} catch (error) {
@@ -75,7 +89,6 @@ const WordGuess = ({ onGuess }) => {
 			alert('An error occurred. Please try again.');
 		}
 	};
-	
 
 	return (
 		<div>
