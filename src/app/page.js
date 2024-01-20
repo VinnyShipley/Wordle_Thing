@@ -9,12 +9,12 @@ const Home = () => {
   const [guessedWords, setGuessedWords] = useState([]);
   const [colorListPasser, setColorListPasser] = useState([]);
 
-  const handleWordGuess = (guessedWord, ColorListPasser) => {
+  const handleWordGuess = (guessedWord, colorList) => {
     setFadedLetters((prevFadedLetters) => [...prevFadedLetters, ...guessedWord.split('')]);
-    setGuessedWords([...guessedWords, guessedWord]);
-    setColorListPasser(ColorListPasser); // Update the state with the new color list
+  setGuessedWords([...guessedWords, guessedWord]);
+  setColorListPasser([...colorListPasser, colorList]);
   };
-  console.log(colorListPasser)
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
       <main className="text-center mb-8">
