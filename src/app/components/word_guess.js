@@ -77,7 +77,7 @@ const WordGuess = ({ onGuess }) => {
 						setColorListPasser(colorListPasserTemp);
 						
 						guessedWords.push(serverResponse.guess);
-						onGuess && onGuess(guess);
+						onGuess && onGuess(guess, colorListPasser);
 					}
 				}
 

@@ -9,10 +9,10 @@ const Home = () => {
   const [guessedWords, setGuessedWords] = useState([]);
   const [colorListPasser, setColorListPasser] = useState([]);
 
-  const handleWordGuess = (guessedWord, updatedColorListPasser) => {
+  const handleWordGuess = (guessedWord, ColorListPasser) => {
     setFadedLetters((prevFadedLetters) => [...prevFadedLetters, ...guessedWord.split('')]);
     setGuessedWords([...guessedWords, guessedWord]);
-    setColorListPasser(updatedColorListPasser); // Update the state with the new color list
+    setColorListPasser(ColorListPasser); // Update the state with the new color list
   };
   console.log(colorListPasser)
   return (
